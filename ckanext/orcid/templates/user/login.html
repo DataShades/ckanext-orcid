@@ -2,5 +2,14 @@
 
 {% block form %}
   {{ super() }}
-  <button>Login with ORCID</button>
+
+  <div class="passkey-login-section d-flex flex-column align-items-center">
+    <div class="passkey-separator w-100 text-center border-top pt-3 my-3">
+      <span>or</span>
+    </div>
+
+    <button type="button" class="btn btn-default btn-block" data-module="auth-passkey-login">
+      Login with ORCID
+    </button>
+  </div>
 {% endblock %}
