@@ -1,0 +1,6 @@
+include README.rst
+include LICENSE
+include requirements.txt
+recursive-include ckanext/orcid *.html *.json *.js *.less *.css *.mo *.yml
+recursive-include ckanext/orcid/migration *.ini *.py *.mako
+recursive-include ckanext/orcid/public *.*

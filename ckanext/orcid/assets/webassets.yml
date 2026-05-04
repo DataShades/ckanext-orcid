@@ -1,0 +1,14 @@
+# orcid-js:
+#   filter: rjsmin
+#   output: ckanext-orcid/%(version)s-orcid.js
+#   contents:
+#     - js/orcid.js
+#   extra:
+#     preload:
+#       - base/main
+
+# orcid-css:
+#   filter: cssrewrite
+#   output: ckanext-orcid/%(version)s-orcid.css
+#   contents:
+#     - css/orcid.css
