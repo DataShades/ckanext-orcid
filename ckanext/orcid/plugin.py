@@ -3,6 +3,7 @@ import ckan.plugins.toolkit as tk
 
 
 @tk.blanket.blueprints
+@tk.blanket.config_declarations
 class OrcidPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
 

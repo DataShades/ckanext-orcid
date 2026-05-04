@@ -1,0 +1,19 @@
+version: 1
+groups:
+  - annotation: ckanext-orcid
+    options:
+      - key: ckanext.orcid.client_id
+        default: ""
+        editable: true
+        description: The client ID for the OAuth2 client used to authenticate with ORCID.
+
+      - key: ckanext.orcid.client_secret
+        default: ""
+        editable: true
+        description: The client secret for the OAuth2 client used to authenticate with ORCID.
+
+      - key: ckanext.orcid.sandbox
+        default: false
+        editable: true
+        type: bool
+        description: Use the ORCID sandbox environment instead of the production environment.
