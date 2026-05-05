@@ -38,7 +38,7 @@ filterwarnings = [
 addopts = "--ckan-ini test.ini"
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py310"
 line-length = 120
 
 [tool.ruff.lint]
