@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 import ckan.plugins.toolkit as tk
 import sqlalchemy as sa
@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped
 
 
 def _current_datetime():
-    return datetime.now(tz=UTC)
+    return datetime.now(tz=timezone.utc)
 
 
 class OrcidUserLink(tk.BaseModel):
