@@ -5,8 +5,8 @@ Revises:
 Create Date: 2026-05-04 18:00:04.026537
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "46c6ab90e282"
@@ -18,7 +18,7 @@ depends_on = None
 def upgrade():
     op.create_table(
         "orcid_user_link",
-        sa.Column("orc_id", sa.String, primary_key=True),
+        sa.Column("orcid_id", sa.String, primary_key=True),
         sa.Column("user_id", sa.String, sa.ForeignKey("user.id"), nullable=False),
         sa.Column("access_token", sa.String, nullable=False),
         sa.Column(

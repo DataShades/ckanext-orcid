@@ -1,122 +1,103 @@
-[![Tests](https://github.com/DataShades/ckanext-orcid/workflows/Tests/badge.svg?branch=main)](https://github.com/DataShades/ckanext-orcid/actions)
+[![Tests](https://github.com/DataShades/ckanext-orcid/actions/workflows/test.yml/badge.svg)](https://github.com/DataShades/ckanext-orcid/actions/workflows/test.yml)
 
 # ckanext-orcid
 
-**TODO:** Put a description of your extension here:  What does it do? What features does it have? Consider including some screenshots or embedding a video!
-
+ORCID SSO integration for CKAN. Allows users to log in to your CKAN instance using their ORCID iD via OAuth2.
 
 ## Requirements
 
-**TODO:** For example, you might want to mention here which versions of CKAN this
-extension works with.
-
-If your extension works across different versions you can add the following table:
-
 Compatibility with core CKAN versions:
 
-| CKAN version    | Compatible?   |
-| --------------- | ------------- |
-| 2.6 and earlier | not tested    |
-| 2.7             | not tested    |
-| 2.8             | not tested    |
-| 2.9             | not tested    |
-
-Suggested values:
-
-* "yes"
-* "not tested" - I can't think of a reason why it wouldn't work
-* "not yet" - there is an intention to get it working
-* "no"
+| CKAN version    | Compatible? |
+| --------------- | ----------- |
+| 2.10            | not tested  |
+| 2.11+           | yes         |
 
 
 ## Installation
 
-**TODO:** Add any additional install steps to the list below.
-   For example installing any non-Python dependencies or adding any required
-   config settings.
+1. Clone the source and install it on the virtualenv:
+```py
+git clone https://github.com/DataShades/ckanext-orcid.git
+cd ckanext-orcid
+pip install -e .
+```
 
-To install ckanext-orcid:
+2. Add `orcid` to the `ckan.plugins` setting in your CKAN config file:
+```ini
+ckan.plugins = ... orcid
+```
 
-1. Activate your CKAN virtual environment, for example:
+3. Run the database migration:
+```py
+ckan db upgrade
+```
 
-     . /usr/lib/ckan/default/bin/activate
+4. Configure your ORCID credentials (see [Obtaining ORCID credentials](#obtaining-orcid-credentials) below).
 
-2. Clone the source and install it on the virtualenv
+6. Restart CKAN.
 
-    git clone https://github.com/DataShades/ckanext-orcid.git
-    cd ckanext-orcid
-    pip install -e .
-	pip install -r requirements.txt
 
-3. Add `orcid` to the `ckan.plugins` setting in your CKAN
-   config file (by default the config file is located at
-   `/etc/ckan/default/ckan.ini`).
+## Obtaining ORCID credentials
 
-4. Restart CKAN. For example if you've deployed CKAN with Apache on Ubuntu:
+To enable ORCID login you need to register an application in the ORCID developer portal and obtain a **Client ID** and **Client Secret**.
 
-     sudo service apache2 reload
+### Using the sandbox (recommended for development)
+
+The ORCID sandbox is a free test environment with no real user data.
+
+1. Create a sandbox account at <https://sandbox.orcid.org/register>.
+2. Log in and go to **Developer Tools** (under your account name menu).
+3. If prompted, verify your email address first.
+4. Click **Register for the free ORCID public API**.
+5. Fill in the application details:
+   - **Name** — your portal's name
+   - **Website URL** — your CKAN instance URL (e.g. `http://127.0.0.1:5000`)
+   - **Description** — short description of your portal
+   - **Redirect URIs** — add your callback URL: `http://127.0.0.1:5000/orcid/callback`
+     (replace the host with your actual domain in production)
+6. Save. You will be shown a **Client ID** (format `APP-XXXXXXXXXXXXXXXXX`) and **Client Secret**.
+
+Set in your CKAN config:
+```ini
+  ckanext.orcid.client_id = APP-XXXXXXXXXXXXXXXXX
+  ckanext.orcid.client_secret = your-client-secret
+  ckanext.orcid.sandbox = true
+```
+
+### Using the production ORCID registry
+
+1. Log in (or register) at <https://orcid.org>.
+2. Go to **Developer Tools** under your account menu.
+3. Click **Register for the free ORCID public API** and follow the same steps as above, using your production redirect URI (e.g. `https://yourckan.example.org/orcid/callback`).
+4. Copy the **Client ID** and **Client Secret**.
+
+Set in your CKAN config:
+```ini
+ckanext.orcid.client_id = APP-XXXXXXXXXXXXXXXXX
+ckanext.orcid.client_secret = your-client-secret
+```
+
+> **Note:** `ckanext.orcid.sandbox` defaults to `false`, so omit it (or set it to `false`) for production.
+
+### Members API
+
+Email retrieval from ORCID requires access to the **ORCID Members API**, which is only available to ORCID member organisations. The public API used above supports authentication (verifying a user's identity) but not reading private profile data such as email addresses. If your organisation is an ORCID member, contact ORCID support to obtain member API credentials and a separate client ID/secret with the `/read-limited` scope.
 
 
 ## Config settings
 
-None at present
-
-**TODO:** Document any optional config settings here. For example:
-
-	# The minimum number of hours to wait before re-checking a resource
-	# (optional, default: 24).
-	ckanext.orcid.some_setting = some_default_value
-
-
-## Developer installation
-
-To install ckanext-orcid for development, activate your CKAN virtualenv and
-do:
-
-    git clone https://github.com/DataShades/ckanext-orcid.git
-    cd ckanext-orcid
-    pip install -e .
-    pip install -r dev-requirements.txt
+| Setting | Required | Default | Description |
+| ------- | -------- | ------- | ----------- |
+| `ckanext.orcid.client_id` | yes | — | OAuth2 Client ID from the ORCID developer portal |
+| `ckanext.orcid.client_secret` | yes | — | OAuth2 Client Secret from the ORCID developer portal |
+| `ckanext.orcid.sandbox` | no | `false` | Set to `true` to use the ORCID sandbox environment |
 
 
 ## Tests
-
-To run the tests, do:
-
-    pytest --ckan-ini=test.ini
-
-
-## Releasing a new version of ckanext-orcid
-
-If ckanext-orcid should be available on PyPI you can follow these steps to publish a new version:
-
-1. Update the version number in the `pyproject.toml` file. See [PEP 440](http://legacy.python.org/dev/peps/pep-0440/#public-version-identifiers) for how to choose version numbers.
-
-2. Make sure you have the latest version of necessary packages:
-
-    pip install --upgrade setuptools wheel twine
-
-3. Create a source and binary distributions of the new version:
-
-       python -m build && twine check dist/*
-
-   Fix any errors you get.
-
-4. Upload the source distribution to PyPI:
-
-       twine upload dist/*
-
-5. Commit any outstanding changes:
-
-       git commit -a
-       git push
-
-6. Tag the new release of the project on GitHub with the version number from
-   the `setup.py` file. For example if the version number in `setup.py` is
-   0.0.1 then do:
-
-       git tag 0.0.1
-       git push --tags
+```py
+pytest --ckan-ini=test.ini
+```
 
 ## License
 

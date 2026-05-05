@@ -3,13 +3,13 @@
 {% block form %}
   {{ super() }}
 
-  <div class="passkey-login-section d-flex flex-column align-items-center">
-    <div class="passkey-separator w-100 text-center border-top pt-3 my-3">
-      <span>or</span>
+  <div class="orcid-login-section d-flex flex-column align-items-center">
+    <div class="orcid-separator w-100 text-center border-top pt-3 my-3">
+      <span>{{ _("or") }}</span>
     </div>
 
-    <button type="button" class="btn btn-default btn-block" data-module="auth-passkey-login">
-      Login with ORCID
-    </button>
+    <a href="{{ h.url_for('orcid.login') }}" class="btn btn-default btn-block">
+      {{ _("Login with ORCID") }}
+    </a>
   </div>
 {% endblock %}
