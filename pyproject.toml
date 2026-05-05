@@ -1,10 +1,10 @@
 [project]
 name = "ckanext-orcid"
-version = "0.0.1"
+version = "0.1.0"
 description = "ORCID integration with CKAN"
 readme = "README.md"
 authors = [
-    {name = "LinkDigital", email = "cherniavskyi.alexandr@linkdigital.com.au"}
+    { name = "Oleksandr Cherniavskiy", email = "cherniavskyi.alexandr@linkdigital.com.au" },
 ]
 license = {text = "AGPL"}
 classifiers = [

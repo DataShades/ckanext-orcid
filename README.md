@@ -4,6 +4,8 @@
 
 ORCID SSO integration for CKAN. Allows users to log in to your CKAN instance using their ORCID iD via OAuth2.
 
+![login example](https://raw.githubusercontent.com/DataShades/ckanext-orcid/master/docs/login.png)
+
 ## Requirements
 
 Compatibility with core CKAN versions:
