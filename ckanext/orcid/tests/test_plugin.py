@@ -17,11 +17,11 @@ class TestOrcidLogin:
         assert "orcid.org/oauth/authorize" in response.headers["Location"]
 
     def test_callback_with_missing_state_redirects_to_login(self, app):
-        response = app.get("/orcid/callback?code=abc&state=bad", follow_redirects=False)
+        response = app.get("/orcid/login/callback?code=abc&state=bad", follow_redirects=False)
         assert response.status_code == 302
         assert "/user/login" in response.headers["Location"]
 
     def test_callback_with_error_param_redirects_to_login(self, app):
-        response = app.get("/orcid/callback?error=access_denied", follow_redirects=False)
+        response = app.get("/orcid/login/callback?error=access_denied", follow_redirects=False)
         assert response.status_code == 302
         assert "/user/login" in response.headers["Location"]
